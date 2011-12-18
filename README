@@ -19,21 +19,23 @@ Server One is based on a SOAP webservice written for PHP 5.x. It includes the fo
 
   * config.php: Used for service configuration.
 
-  * s1.wsdl: Webservice description. You find information about public interfaces and method arguments here.
+  * s1.wsdl: Webservice description. You find information about public
+    interfaces and method arguments here.
 
   * s1.php: Webservice controller for request delegation.
 
   * MediaService.php: Webservice that handles SOAP requests.
 
-  * MediaServer.php: Core server application for request processing (i.e. base64 decoding, file management, database access).
+  * MediaServer.php: Core server application for request processing
+    (i.e. base64 decoding, file management, database access).
 
   * Database.php: Used to access database backend via PHP's PDO extension.
 
   * c1.php: Webservice test client.
 
-==== Webservice interfaces ====
+==== Webservice methods ====
 
-Currently the MediaService provides the following webservice methods:
+Currently the MediaService provides the following webservice interface:
 
   * uploadSample(Latitude, Longitude, Description, PayloadType, Payload)
 
@@ -111,7 +113,7 @@ Geo locations are processed as decimal degrees [1], that is values from +/- 90.0
 
 To find nearby points of interest (POI), e.g. sound samples recorded in the neighbourhood, you can provide your current location and a range. Geo location must be given as decimal degrees, whereas the unit for range is km.
 
-A value of 0.01 degree is equal to 1.11 km. So 1 km is on about 0.009 degree.
+A value of 0.01 degree is equal to 1.11 km. So 1 km is on about 0.009 degrees.
 
 ==== References ====
 
