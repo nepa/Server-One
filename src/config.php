@@ -10,6 +10,6 @@ $config['db_database'] = 's1';
 // Upload directory should be non-public and needs chmod 777
 $config['upload_dir'] = './uploads/'; // With trailing slash
 $config['unknown_file_extension'] = '.unknown'; // With dot
+$config['security_file_extension'] = '.s1'; // With dot
 
 ?>
-

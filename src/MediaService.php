@@ -40,6 +40,14 @@ class MediaService
     {
       return MediaServer::handleNoiseLevelsRequest($latitude, $longitude, $range);
     }
+
+    /**
+     * Method to query for the average noise level in neighbourhood.
+     */
+    public function getAverageNoiseLevel($latitude, $longitude, $range)
+    {
+      return MediaServer::handleAverageNoiseLevelRequest($latitude, $longitude, $range);
+    }
 }
 
 ?>

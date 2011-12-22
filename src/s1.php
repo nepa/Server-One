@@ -4,7 +4,7 @@
  * Server for webservice request handling.
  */
 
-error_reporting(E_ALL); // No error reporting in live environment
+error_reporting(0); // No error reporting in live environment
 
 require_once('./MediaService.php');
 

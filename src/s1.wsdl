@@ -56,7 +56,7 @@
     <part name="ResultCount" type="xsd:int" />
   </message>
 
-  <!-- Message for noise level querying request -->
+  <!-- Message for noise levels querying request -->
   <message name="getNoiseLevelsRequest">
     <part name="Latitude" type="xsd:decimal" />
     <part name="Longitude" type="xsd:decimal" />
@@ -69,6 +69,20 @@
     <part name="Message" type="xsd:string" />
     <part name="NoiseLevels" type="xsd:struct" />
     <part name="ResultCount" type="xsd:int" />
+  </message>
+
+  <!-- Message for average noise level querying request -->
+  <message name="getAverageNoiseLevelRequest">
+    <part name="Latitude" type="xsd:decimal" />
+    <part name="Longitude" type="xsd:decimal" />
+    <part name="Range" type="xsd:decimal" />
+  </message>
+
+  <!-- Message for average noise level querying response -->
+  <message name="getAverageNoiseLevelResponse">
+    <part name="Statuscode" type="xsd:string" />
+    <part name="Message" type="xsd:string" />
+    <part name="AverageNoiseLevel" type="xsd:int" />
   </message>
 
   <!-- Operations provided by webservice -->
@@ -96,6 +110,12 @@
     <operation name="getNoiseLevels">
       <input message="tns:getNoiseLevelsRequest" />
       <output message="tns:getNoiseLevelsResponse" />
+    </operation>
+
+    <!-- Querying average noise level in neighbourhood -->
+    <operation name="getAverageNoiseLevel">
+      <input message="tns:getAverageNoiseLevelRequest" />
+      <output message="tns:getAverageNoiseLevelResponse" />
     </operation>
 
   </portType>
@@ -143,6 +163,18 @@
 
     <operation name="getNoiseLevels">
       <soap:operation soapAction="urn:s1#getNoiseLevels" />
+      <input>
+        <soap:body use="encoded" namespace="urn:s1"
+          encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="urn:s1"
+          encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+
+    <operation name="getAverageNoiseLevel">
+      <soap:operation soapAction="urn:s1#getAverageNoiseLevel" />
       <input>
         <soap:body use="encoded" namespace="urn:s1"
           encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />

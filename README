@@ -105,6 +105,23 @@ Currently the MediaService provides the following webservice interface:
         - NoiseLevels: xsd:struct, a list of noise levels (if any)
         - ResultCount: xsd:int, number of results returned
 
+---
+
+  * getAverageNoiseLevel(Latitude, Longitude, Range)
+
+      * Description:
+          Get the average noise level of nearby area
+
+      * Arguments:
+        - Latitude: xsd:decimal, range +/- 90.0°
+        - Longitude: xsd:decimal, range +/- 180.0°
+        - Range: xsd:decimal, unit is km
+
+      * Return values:
+        - Statuscode: xsd:string, e.g. "OK" or "Error"
+        - Message: xsd:string, human-readable message
+        - AverageNoiseLevel: xsd:int, unit is dB
+
 ==== Geo coordinates ====
 
 Geo locations are processed as decimal degrees [1], that is values from +/- 90.0° for latitude and +/- 180.0° for longitude. For example "53.834208, 10.700136" describes "latitude (north, south), longitude (west, east)" of the Audimax, UzL [2].

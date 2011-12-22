@@ -112,6 +112,39 @@ class MediaServer
   }
 
   /**
+   * Handle incoming requests that query for average noise level in neighbourhood.
+   * Sound levels are taken from the database and average is calculated
+   * across all values in range.
+   */
+  public static function handleAverageNoiseLevelRequest($latitude, $longitude, $range)
+  {
+    // Validate geo coordinates
+    if (!MediaServer::validGeoCoordinates($latitude, $longitude))
+    {
+      return array('Error', 'Invalid or no geo coordinates provided.');
+    }
+
+    // Return average noise level from neighbourhood
+    $database = new Database();
+    $noiseLevels = $database->getNoiseLevels($latitude, $longitude, $range);
+    if (count($noiseLevels) <= 0)
+    {
+      return array('Info', 'No nearby sound levels found.');
+    }
+
+    // Calculate average value and return as integer
+    $sum = 0;
+    foreach ($noiseLevels as $data)
+    {
+      $sum += $data['noiseLevel'];
+    }
+    $averageNoiseLevel = intval($sum / count($noiseLevels));
+
+    // Send response
+    return array('OK', 'Average sound level queried successfully.', $averageNoiseLevel);
+  }
+
+  /**
    * Validate geo coordinates from SOAP request.
    */
   public static function validGeoCoordinates($latitude, $longitude)
@@ -150,7 +183,7 @@ class MediaServer
         break;
     }
 
-    return $fileName . ".s1";
+    return $fileName . $config['security_file_extension'];
   }
 
   /**
