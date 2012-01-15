@@ -70,19 +70,26 @@ class Database
   /**
    * Save noise level in database.
    */
-  public function saveNoiseLevel($latitude, $longitude, $noiseLevel)
+  public function saveNoiseLevel($latitude, $longitude, $zipCode, $noiseLevel)
   {
     $success = false;
+
+    // Set zip code to NULL, if string is empty
+    if ($zipCode == '')
+    {
+      $zipCode = null;
+    }
 
     try
     {
       // Prepare insert statement
-      $preparedStatement = $this->db->prepare('INSERT INTO noiseLevels (latitude, longitude, noiseLevel) ' .
-        'VALUES (:latitude, :longitude, :noiseLevel)');
+      $preparedStatement = $this->db->prepare('INSERT INTO noiseLevels (latitude, longitude, zipCode, noiseLevel) ' .
+        'VALUES (:latitude, :longitude, :zipCode, :noiseLevel)');
 
       // Bind values to placeholders
       $preparedStatement->bindParam(':latitude', $latitude, PDO::PARAM_STR);
       $preparedStatement->bindParam(':longitude', $longitude, PDO::PARAM_STR);
+      $preparedStatement->bindParam(':zipCode', $zipCode, PDO::PARAM_STR);
       $preparedStatement->bindParam(':noiseLevel', $noiseLevel, PDO::PARAM_INT);
 
       // Execute statement
@@ -157,6 +164,36 @@ class Database
       $preparedStatement->bindParam(':lat_south', $cornerPoints['lat_south'], PDO::PARAM_STR);
       $preparedStatement->bindParam(':long_west', $cornerPoints['long_west'], PDO::PARAM_STR);
       $preparedStatement->bindParam(':long_east', $cornerPoints['long_east'], PDO::PARAM_STR);
+
+      // Execute statement
+      $preparedStatement->execute();
+
+      // Fetch result set and eventually return it
+      $result = $preparedStatement->fetchAll(PDO::FETCH_ASSOC);
+    }
+    catch (PDOException $e)
+    {
+      die($e->getMessage());
+    }
+
+    return $result;
+  }
+
+  /**
+   * Query database for average sound level by zip code.
+   */
+  public function getAverageNoiseLevelByZipCode($zipCode)
+  {
+    $result = array();
+
+    try
+    {
+      // Prepare select statement
+      $preparedStatement = $this->db->prepare(
+        'SELECT AVG(noiseLevel) AS averageNoiseLevel FROM noiseLevels WHERE zipCode = :zipCode');
+
+      // Bind value to placeholder
+      $preparedStatement->bindParam(':zipCode', $zipCode, PDO::PARAM_STR);
 
       // Execute statement
       $preparedStatement->execute();

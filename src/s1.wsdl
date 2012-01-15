@@ -32,10 +32,11 @@
   <message name="reportNoiseLevelRequest">
     <part name="Latitude" type="xsd:decimal" />
     <part name="Longitude" type="xsd:decimal" />
+    <part name="ZipCode" type="xsd:string" />
     <part name="NoiseLevel" type="xsd:int" />
   </message>
 
-  <!-- Message for reort noise level response -->
+  <!-- Message for report noise level response -->
   <message name="reportNoiseLevelResponse">
     <part name="Statuscode" type="xsd:string" />
     <part name="Message" type="xsd:string" />
@@ -85,6 +86,18 @@
     <part name="AverageNoiseLevel" type="xsd:int" />
   </message>
 
+  <!-- Message for average noise level by zip code querying request -->
+  <message name="getAverageNoiseLevelByZipCodeRequest">
+    <part name="ZipCode" type="xsd:string" />
+  </message>
+
+  <!-- Message for average noise level by zip code querying response -->
+  <message name="getAverageNoiseLevelByZipCodeResponse">
+    <part name="Statuscode" type="xsd:string" />
+    <part name="Message" type="xsd:string" />
+    <part name="AverageNoiseLevel" type="xsd:int" />
+  </message>
+
   <!-- Operations provided by webservice -->
   <portType name="MediaServicePortType">
 
@@ -116,6 +129,12 @@
     <operation name="getAverageNoiseLevel">
       <input message="tns:getAverageNoiseLevelRequest" />
       <output message="tns:getAverageNoiseLevelResponse" />
+    </operation>
+
+    <!-- Querying average noise level by zip code -->
+    <operation name="getAverageNoiseLevelByZipCode">
+      <input message="tns:getAverageNoiseLevelByZipCodeRequest" />
+      <output message="tns:getAverageNoiseLevelByZipCodeResponse" />
     </operation>
 
   </portType>
@@ -175,6 +194,18 @@
 
     <operation name="getAverageNoiseLevel">
       <soap:operation soapAction="urn:s1#getAverageNoiseLevel" />
+      <input>
+        <soap:body use="encoded" namespace="urn:s1"
+          encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="urn:s1"
+          encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+
+    <operation name="getAverageNoiseLevelByZipCode">
+      <soap:operation soapAction="urn:s1#getAverageNoiseLevelByZipCode" />
       <input>
         <soap:body use="encoded" namespace="urn:s1"
           encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />

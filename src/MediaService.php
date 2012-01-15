@@ -20,9 +20,9 @@ class MediaService
   /**
    * Method for sound level report.
    */
-   public function reportNoiseLevel($latitude, $longitude, $noiseLevel)
+   public function reportNoiseLevel($latitude, $longitude, $zipCode, $noiseLevel)
    {
-     return MediaServer::handleReportRequest($latitude, $longitude, $noiseLevel);
+     return MediaServer::handleReportRequest($latitude, $longitude, $zipCode, $noiseLevel);
    }
 
    /**
@@ -47,6 +47,14 @@ class MediaService
     public function getAverageNoiseLevel($latitude, $longitude, $range)
     {
       return MediaServer::handleAverageNoiseLevelRequest($latitude, $longitude, $range);
+    }
+
+    /**
+     * Method to query for the average noise level by zip code.
+     */
+    public function getAverageNoiseLevelByZipCode($zipCode)
+    {
+      return MediaServer::handleAverageNoiseLevelByZipCodeRequest($zipCode);
     }
 }
 
