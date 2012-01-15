@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 17. Dezember 2011 um 19:33
+-- Erstellungszeit: 15. Januar 2012 um 04:04
 -- Server Version: 5.1.37
 -- PHP-Version: 5.3.0
 
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `metadata` (
   `description` text NOT NULL,
   `fileName` varchar(80) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -38,6 +38,8 @@ CREATE TABLE IF NOT EXISTS `noiseLevels` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `longitude` decimal(8,5) NOT NULL,
   `latitude` decimal(7,5) NOT NULL,
+  `zipCode` varchar(10) DEFAULT NULL,
   `noiseLevel` int(3) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+  PRIMARY KEY (`id`),
+  KEY `zipCode` (`zipCode`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;

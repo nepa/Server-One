@@ -63,6 +63,7 @@ Currently the MediaService provides the following webservice interface:
       * Arguments:
         - Latitude: xsd:decimal, range +/- 90.0°
         - Longitude: xsd:decimal, range +/- 180.0°
+        - ZipCode: xsd:string, optional, max. 10 characters
         - NoiseLevel: xsd:int, unit is dB
 
       * Return values:
@@ -116,6 +117,21 @@ Currently the MediaService provides the following webservice interface:
         - Latitude: xsd:decimal, range +/- 90.0°
         - Longitude: xsd:decimal, range +/- 180.0°
         - Range: xsd:decimal, unit is km
+
+      * Return values:
+        - Statuscode: xsd:string, e.g. "OK" or "Error"
+        - Message: xsd:string, human-readable message
+        - AverageNoiseLevel: xsd:int, unit is dB
+
+---
+
+  * getAverageNoiseLevelByZipCode(ZipCode)
+
+      * Description:
+          Get average noise level of postcode area
+
+      * Arguments:
+        - ZipCode: xsd:string, max. 10 characters
 
       * Return values:
         - Statuscode: xsd:string, e.g. "OK" or "Error"
