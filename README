@@ -45,6 +45,8 @@ Currently the MediaService provides the following webservice interface:
       * Arguments:
         - Latitude: xsd:decimal, range +/- 90.0°
         - Longitude: xsd:decimal, range +/- 180.0°
+        - Title: xsd:string, max. 255 characters
+        - Timestamp: xsd:string, max. 80 characters
         - Description: xsd:string
         - PayloadType: xsd:string, either one of "mp3" or "ogg"
         - payload: xsd:string, base64 encoded binary file (sound sample)

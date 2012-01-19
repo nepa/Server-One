@@ -17,6 +17,8 @@
   <message name="uploadRequest">
     <part name="Latitude" type="xsd:decimal" />
     <part name="Longitude" type="xsd:decimal" />
+    <part name="Title" type="xsd:string" />
+    <part name="Timestamp" type="xsd:string" />
     <part name="Description" type="xsd:string" />
     <part name="PayloadType" type="xsd:string" />
     <part name="Payload" type="xsd:string" />

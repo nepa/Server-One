@@ -12,7 +12,7 @@ class MediaServer
    * Handle incoming upload requests, i.e. save meta data in
    * database and store payload on disk.
    */
-  public static function handleUploadRequest($latitude, $longitude, $description, $payloadType, $payload)
+  public static function handleUploadRequest($latitude, $longitude, $title, $timestamp, $description, $payloadType, $payload)
   {
     // Validate geo coordinates
     if (!MediaServer::validGeoCoordinates($latitude, $longitude))
@@ -31,7 +31,7 @@ class MediaServer
 
     // Save meta data in database
     $database = new Database();
-    if (!$database->saveMetadata($latitude, $longitude, $description, $fileName))
+    if (!$database->saveMetadata($latitude, $longitude, $title, $timestamp, $description, $fileName))
     {
       return array('Error', 'Could not write meta data to database.');
     }
@@ -214,11 +214,11 @@ class MediaServer
    * Generate a random file name, so that we can uniquely store
    * it on disk later on.
    */
-  public static function generateFileName($latitude, $longitude, $description, $payloadType)
+  public static function generateFileName($latitude, $longitude, $title, $timestamp, $description, $payloadType)
   {
     global $config;
 
-    $fileName = md5($latitude . $longitude . $description . time());
+    $fileName = md5($latitude . $longitude . $title . $timestamp . $description . time());
 
     switch (strtolower($payloadType))
     {

@@ -40,19 +40,22 @@ class Database
   /**
    * Save meta data in database.
    */
-  public function saveMetadata($latitude, $longitude, $description, $fileName)
+  public function saveMetadata($latitude, $longitude, $title, $timestamp, $description, $fileName)
   {
     $success = false;
 
     try
     {
       // Prepare insert statement
-      $preparedStatement = $this->db->prepare('INSERT INTO metadata (latitude, longitude, description, ' .
-        'fileName) VALUES (:latitude, :longitude, :description, :fileName)');
+      $preparedStatement = $this->db->prepare(
+        'INSERT INTO metadata (latitude, longitude, title, timestamp, description, fileName) ' .
+        'VALUES (:latitude, :longitude, :title, :timestamp, :description, :fileName)');
 
       // Bind values to placeholders
       $preparedStatement->bindParam(':latitude', $latitude, PDO::PARAM_STR);
       $preparedStatement->bindParam(':longitude', $longitude, PDO::PARAM_STR);
+      $preparedStatement->bindParam(':title', $title, PDO::PARAM_STR);
+      $preparedStatement->bindParam(':timestamp', $timestamp, PDO::PARAM_STR);
       $preparedStatement->bindParam(':description', $description, PDO::PARAM_STR);
       $preparedStatement->bindParam(':fileName', $fileName, PDO::PARAM_STR);
 
@@ -117,7 +120,7 @@ class Database
 
       // Prepare select statement
       $preparedStatement = $this->db->prepare(
-        'SELECT latitude, longitude, description, fileName FROM metadata WHERE ' .
+        'SELECT latitude, longitude, title, timestamp, description, fileName FROM metadata WHERE ' .
         '(latitude BETWEEN :lat_north AND :lat_south) AND ' .
         '(longitude BETWEEN :long_west AND :long_east)');
 

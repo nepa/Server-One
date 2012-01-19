@@ -12,9 +12,9 @@ class MediaService
   /**
    * Method for file upload.
    */
-  public function uploadSample($latitude, $longitude, $description, $payloadType, $payload)
+  public function uploadSample($latitude, $longitude, $title, $timestamp, $description, $payloadType, $payload)
   {
-    return MediaServer::handleUploadRequest($latitude, $longitude, $description, $payloadType, $payload);
+    return MediaServer::handleUploadRequest($latitude, $longitude, $title, $timestamp, $description, $payloadType, $payload);
   }
 
   /**
