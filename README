@@ -48,7 +48,7 @@ Currently the MediaService provides the following webservice interface:
         - Title: xsd:string, max. 255 characters
         - Timestamp: xsd:string, max. 80 characters
         - Description: xsd:string
-        - PayloadType: xsd:string, either one of "mp3" or "ogg"
+        - PayloadType: xsd:string, either one of "mp3", "mp4" or "ogg"
         - payload: xsd:string, base64 encoded binary file (sound sample)
 
       * Return values:
@@ -139,6 +139,14 @@ Currently the MediaService provides the following webservice interface:
         - Statuscode: xsd:string, e.g. "OK" or "Error"
         - Message: xsd:string, human-readable message
         - AverageNoiseLevel: xsd:int, unit is dB
+
+==== General workflow ====
+
+1. Upload a sound sample with the uploadSample() method.
+
+2. Call getSamples() and provide your current location. You will get a list of IDs for sound samples in the nearby area.
+
+3. Let's say one of the sample IDs was "foobar". You can now fetch the file from download.php?sid=foobar and do playback.
 
 ==== Geo coordinates ====
 

@@ -28,6 +28,7 @@
   <message name="uploadResponse">
     <part name="Statuscode" type="xsd:string" />
     <part name="Message" type="xsd:string" />
+    <part name="SampleID" type="xsd:string" />
   </message>
 
   <!-- Message for report noise level request -->

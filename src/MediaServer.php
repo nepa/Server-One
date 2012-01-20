@@ -20,18 +20,24 @@ class MediaServer
       return array('Error', 'Invalid or no geo coordinates provided.');
     }
 
+    // Validate payload type
+    if (!MediaServer::validatePayloadType($payloadType))
+    {
+      return array('Error', 'Invalid or no payload type provided.');
+    }
+
     // Generate random file name
-    $fileName = MediaServer::generateFileName($latitude, $longitude, $description, $payloadType);
+    $sampleID = MediaServer::generateSampleID($latitude, $longitude, $description);
 
     // Write file to disk
-    if (!MediaServer::storePayload($fileName, $payload))
+    if (!MediaServer::storePayload($sampleID, $payload))
     {
       return array('Error', 'Could not store payload on disk.');
     }
 
     // Save meta data in database
     $database = new Database();
-    if (!$database->saveMetadata($latitude, $longitude, $title, $timestamp, $description, $fileName))
+    if (!$database->saveMetadata($latitude, $longitude, $title, $timestamp, $description, $sampleID, $payloadType))
     {
       return array('Error', 'Could not write meta data to database.');
     }
@@ -211,40 +217,40 @@ class MediaServer
   }
 
   /**
-   * Generate a random file name, so that we can uniquely store
-   * it on disk later on.
+   * Validate payload type, which should either be one of "mp3",
+   * "mp4" or "ogg".
    */
-  public static function generateFileName($latitude, $longitude, $title, $timestamp, $description, $payloadType)
+  public static function validatePayloadType($payloadType)
   {
-    global $config;
+    $result = false;
 
-    $fileName = md5($latitude . $longitude . $title . $timestamp . $description . time());
-
-    switch (strtolower($payloadType))
+    if (in_array($payloadType, array('mp3', 'mp4', 'ogg')))
     {
-      case 'mp3':
-        $fileName .= '.mp3';
-        break;
-      case 'ogg':
-        $fileName .= '.ogg';
-        break;
-      // Remove any unknown file extensions for security reasons!
-      default:
-        $fileName .= $config['unknown_file_extension'];
-        break;
+      $result = true;
     }
 
-    return $fileName . $config['security_file_extension'];
+    return $result;
+  }
+
+  /**
+   * Generate a random sample ID, so we can store files with unique
+   * names on the disk later.
+   */
+  public static function generateSampleID($latitude, $longitude, $title, $timestamp, $description)
+  {
+    return md5($latitude . $longitude . $title . $timestamp . $description . time());
   }
 
   /**
    * Store payload on disk.
    */
-  public static function storePayload($fileName, $payload)
+  public static function storePayload($sampleID, $payload)
   {
     global $config;
 
-    return file_put_contents($config['upload_dir'] . $fileName, base64_decode($payload));
+    $fileName = $config['upload_dir'] . $sampleID . $config['security_file_extension'];
+
+    return file_put_contents($fileName, base64_decode($payload));
   }
 }
 

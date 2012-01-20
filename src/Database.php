@@ -40,7 +40,7 @@ class Database
   /**
    * Save meta data in database.
    */
-  public function saveMetadata($latitude, $longitude, $title, $timestamp, $description, $fileName)
+  public function saveMetadata($latitude, $longitude, $title, $timestamp, $description, $sampleID, $payloadType)
   {
     $success = false;
 
@@ -48,8 +48,8 @@ class Database
     {
       // Prepare insert statement
       $preparedStatement = $this->db->prepare(
-        'INSERT INTO metadata (latitude, longitude, title, timestamp, description, fileName) ' .
-        'VALUES (:latitude, :longitude, :title, :timestamp, :description, :fileName)');
+        'INSERT INTO metadata (latitude, longitude, title, timestamp, description, sampleID, fileType) ' .
+        'VALUES (:latitude, :longitude, :title, :timestamp, :description, :sampleID, :fileType)');
 
       // Bind values to placeholders
       $preparedStatement->bindParam(':latitude', $latitude, PDO::PARAM_STR);
@@ -57,7 +57,8 @@ class Database
       $preparedStatement->bindParam(':title', $title, PDO::PARAM_STR);
       $preparedStatement->bindParam(':timestamp', $timestamp, PDO::PARAM_STR);
       $preparedStatement->bindParam(':description', $description, PDO::PARAM_STR);
-      $preparedStatement->bindParam(':fileName', $fileName, PDO::PARAM_STR);
+      $preparedStatement->bindParam(':sampleID', $sampleID, PDO::PARAM_STR);
+      $preparedStatement->bindParam(':fileType', $payloadType, PDO::PARAM_STR);
 
       // Execute statement
       $success = $preparedStatement->execute();
@@ -120,7 +121,7 @@ class Database
 
       // Prepare select statement
       $preparedStatement = $this->db->prepare(
-        'SELECT latitude, longitude, title, timestamp, description, fileName FROM metadata WHERE ' .
+        'SELECT latitude, longitude, title, timestamp, description, sampleID FROM metadata WHERE ' .
         '(latitude BETWEEN :lat_north AND :lat_south) AND ' .
         '(longitude BETWEEN :long_west AND :long_east)');
 
@@ -245,6 +246,36 @@ class Database
       $temp = $result['long_east'];
       $result['long_east'] = $result['long_west'];
       $result['long_west'] = $temp;
+    }
+
+    return $result;
+  }
+
+  /**
+   * Get payload type of a sound sample.
+   */
+  public function getPayloadType($sampleID)
+  {
+    $result = array();
+
+    try
+    {
+      // Prepare select statement
+      $preparedStatement = $this->db->prepare(
+        'SELECT fileType FROM metadata WHERE sampleID = :sampleID');
+
+      // Bind value to placeholder
+      $preparedStatement->bindParam(':sampleID', $sampleID, PDO::PARAM_STR);
+
+      // Execute statement
+      $preparedStatement->execute();
+
+      // Fetch result set and eventually return it
+      $result = $preparedStatement->fetchAll(PDO::FETCH_ASSOC);
+    }
+    catch (PDOException $e)
+    {
+      die($e->getMessage());
     }
 
     return $result;
