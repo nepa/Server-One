@@ -43,7 +43,7 @@ class MediaServer
     }
 
     // Send response
-    return array('OK', 'Media file uploaded successfully.');
+    return array('OK', 'Media file uploaded successfully.', $sampleID);
   }
 
   /**
