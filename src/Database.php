@@ -74,7 +74,7 @@ class Database
   /**
    * Save noise level in database.
    */
-  public function saveNoiseLevel($latitude, $longitude, $zipCode, $noiseLevel)
+  public function saveNoiseLevel($latitude, $longitude, $timestamp, $zipCode, $noiseLevel)
   {
     $success = false;
 
@@ -87,12 +87,14 @@ class Database
     try
     {
       // Prepare insert statement
-      $preparedStatement = $this->db->prepare('INSERT INTO noiseLevels (latitude, longitude, zipCode, noiseLevel) ' .
-        'VALUES (:latitude, :longitude, :zipCode, :noiseLevel)');
+      $preparedStatement = $this->db->prepare(
+        'INSERT INTO noiseLevels (latitude, longitude, timestamp, zipCode, noiseLevel) ' .
+        'VALUES (:latitude, :longitude, :timestamp, :zipCode, :noiseLevel)');
 
       // Bind values to placeholders
       $preparedStatement->bindParam(':latitude', $latitude, PDO::PARAM_STR);
       $preparedStatement->bindParam(':longitude', $longitude, PDO::PARAM_STR);
+      $preparedStatement->bindParam(':timestamp', $timestamp, PDO::PARAM_STR);
       $preparedStatement->bindParam(':zipCode', $zipCode, PDO::PARAM_STR);
       $preparedStatement->bindParam(':noiseLevel', $noiseLevel, PDO::PARAM_INT);
 
@@ -159,7 +161,7 @@ class Database
 
       // Prepare select statement
       $preparedStatement = $this->db->prepare(
-        'SELECT latitude, longitude, noiseLevel FROM noiseLevels WHERE ' .
+        'SELECT latitude, longitude, timestamp, zipCode, noiseLevel FROM noiseLevels WHERE ' .
         '(latitude BETWEEN :lat_north AND :lat_south) AND ' .
         '(longitude BETWEEN :long_west AND :long_east)');
 

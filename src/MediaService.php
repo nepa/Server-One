@@ -18,11 +18,11 @@ class MediaService
   }
 
   /**
-   * Method for sound level report.
+   * Method for sound level reporting.
    */
-   public function reportNoiseLevel($latitude, $longitude, $zipCode, $noiseLevel)
+   public function reportNoiseLevel($latitude, $longitude, $timestamp, $zipCode, $noiseLevel)
    {
-     return MediaServer::handleReportRequest($latitude, $longitude, $zipCode, $noiseLevel);
+     return MediaServer::handleReportRequest($latitude, $longitude, $timestamp, $zipCode, $noiseLevel);
    }
 
    /**

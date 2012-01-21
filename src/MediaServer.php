@@ -50,7 +50,7 @@ class MediaServer
    * Handle incoming requests that report noise levels. Store these in
    * the database.
    */
-  public static function handleReportRequest($latitude, $longitude, $zipCode, $noiseLevel)
+  public static function handleReportRequest($latitude, $longitude, $timestamp, $zipCode, $noiseLevel)
   {
     // Validate geo coordinates
     if (!MediaServer::validGeoCoordinates($latitude, $longitude))
@@ -66,7 +66,7 @@ class MediaServer
 
     // Store noise level in database
     $database = new Database();
-    if (!$database->saveNoiseLevel($latitude, $longitude, $zipCode, $noiseLevel))
+    if (!$database->saveNoiseLevel($latitude, $longitude, $timestamp, $zipCode, $noiseLevel))
     {
       return array('Error', 'Could not write noise level to database.');
     }

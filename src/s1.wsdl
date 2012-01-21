@@ -35,6 +35,7 @@
   <message name="reportNoiseLevelRequest">
     <part name="Latitude" type="xsd:decimal" />
     <part name="Longitude" type="xsd:decimal" />
+    <part name="Timestamp" type="xsd:string" />
     <part name="ZipCode" type="xsd:string" />
     <part name="NoiseLevel" type="xsd:int" />
   </message>

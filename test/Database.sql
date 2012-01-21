@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 20. Januar 2012 um 21:46
+-- Erstellungszeit: 21. Januar 2012 um 18:01
 -- Server Version: 5.1.37
 -- PHP-Version: 5.3.0
 
@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS `noiseLevels` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `longitude` decimal(8,5) NOT NULL,
   `latitude` decimal(7,5) NOT NULL,
+  `timestamp` varchar(80) NOT NULL,
   `zipCode` varchar(10) DEFAULT NULL,
   `noiseLevel` int(3) NOT NULL,
   PRIMARY KEY (`id`),

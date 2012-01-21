@@ -39,7 +39,7 @@ Server One is based on a SOAP webservice written for PHP 5.x. It includes the fo
 
 Currently the MediaService provides the following webservice interface:
 
-  * uploadSample(Latitude, Longitude, Description, PayloadType, Payload)
+  * uploadSample(Latitude, Longitude, Title, Timestamp, Description, PayloadType, Payload)
 
       * Description:
           Upload a sound sample to the server
@@ -51,7 +51,7 @@ Currently the MediaService provides the following webservice interface:
         - Timestamp: xsd:string, max. 80 characters
         - Description: xsd:string
         - PayloadType: xsd:string, either one of "mp3", "mp4" or "ogg"
-        - payload: xsd:string, base64 encoded binary file (sound sample)
+        - Payload: xsd:string, base64 encoded binary file (sound sample)
 
       * Return values:
         - Statuscode: xsd:string, e.g. "OK" or "Error"
@@ -60,7 +60,7 @@ Currently the MediaService provides the following webservice interface:
 
 ---
 
-  * reportNoiseLevel(Latitude, Longitude, NoiseLevel)
+  * reportNoiseLevel(Latitude, Longitude, Timestamp, ZipCode, NoiseLevel)
 
       * Description:
           Report noise level for given location
@@ -68,6 +68,7 @@ Currently the MediaService provides the following webservice interface:
       * Arguments:
         - Latitude: xsd:decimal, range +/- 90.0°
         - Longitude: xsd:decimal, range +/- 180.0°
+        - Timestamp: xsd:string, max. 80 characters
         - ZipCode: xsd:string, optional, max. 10 characters
         - NoiseLevel: xsd:int, unit is dB
 
