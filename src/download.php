@@ -18,6 +18,7 @@ class DownloadManager
 
     $fileName = '';
     $fileType = '';
+    $sampleName = '';
 
     // Sample ID must be provided
     if ($sampleID == '')
@@ -40,6 +41,7 @@ class DownloadManager
         $fileType = $resultSet[0]['fileType'];
       }
       $fileName = $sampleID . $config['security_file_extension'];
+      $sampleName = $sampleID . '.' . $resultSet[0]['fileType'];
 
       // Prevent directory traversal attacks
       $fileName = str_replace('..', '', $fileName);
@@ -49,7 +51,7 @@ class DownloadManager
       {
         // Set MIME type and file name
         header('Content-Type: ' . $this->getContentType($fileType));
-        header('Content-Disposition: attachment; filename="AudioSample-' . $fileName . '"');
+        header('Content-Disposition: attachment; filename="AudioSample-' . $sampleName . '"');
 
         // Send file to client
         readfile($config['upload_dir'] . $fileName);
