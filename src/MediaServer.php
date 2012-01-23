@@ -218,13 +218,13 @@ class MediaServer
 
   /**
    * Validate payload type, which should either be one of "mp3",
-   * "mp4" or "ogg".
+   * "m4a" or "ogg".
    */
   public static function validatePayloadType($payloadType)
   {
     $result = false;
 
-    if (in_array($payloadType, array('mp3', 'mp4', 'ogg')))
+    if (in_array($payloadType, array('mp3', 'm4a', 'ogg')))
     {
       $result = true;
     }

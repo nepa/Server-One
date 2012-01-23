@@ -75,8 +75,8 @@ class DownloadManager
       case 'mp3':
         $contentType .= 'mpeg';
         break;
-      case 'mp4':
-        $contentType .= 'mp4';
+      case 'm4a':
+        $contentType .= 'm4a';
         break;
       case 'ogg':
         $contentType .= 'ogg';
