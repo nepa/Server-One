@@ -92,7 +92,7 @@ class MediaServer
     $sampleData = $database->getSamples($latitude, $longitude, $range);
     if (count($sampleData) <= 0)
     {
-      return array('OK', 'No nearby sound samples found.');
+      return array('Info', 'No nearby sound samples found.');
     }
 
     // Send response
@@ -116,7 +116,7 @@ class MediaServer
     $noiseLevels = $database->getNoiseLevels($latitude, $longitude, $range);
     if (count($noiseLevels) <= 0)
     {
-      return array('OK', 'No nearby sound levels found.');
+      return array('Info', 'No nearby sound levels found.');
     }
 
     // Send response
@@ -141,7 +141,7 @@ class MediaServer
     $resultSet = $database->getNoiseLevels($latitude, $longitude, $range);
     if (count($resultSet) <= 0)
     {
-      return array('OK', 'No nearby sound levels found.');
+      return array('Info', 'No nearby sound levels found.');
     }
 
     // Calculate average value and return as integer
@@ -177,7 +177,7 @@ class MediaServer
     $averageNoiseLevel = intval($resultSet[0]['averageNoiseLevel']);
     if ($averageNoiseLevel == '')
     {
-      return array('OK', 'No sound levels found in postcode area.');
+      return array('Info', 'No sound levels found in postcode area.');
     }
 
     // Send response
