@@ -10,7 +10,7 @@ require_once('./MediaService.php');
 
 try
 {
-  $server = new SoapServer('./s1.wsdl', array('encoding' => 'UTF-8'));
+  $server = new SoapServer('./s1.wsdl', array('encoding' => 'ISO-8859-1'));
   $server->setClass('MediaService');
   $server->handle();
 }
