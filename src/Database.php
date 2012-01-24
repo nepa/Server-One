@@ -48,8 +48,8 @@ class Database
     {
       // Prepare insert statement
       $preparedStatement = $this->db->prepare(
-        'INSERT INTO metadata (latitude, longitude, title, timestamp, description, sampleID, fileType) ' .
-        'VALUES (:latitude, :longitude, :title, :timestamp, :description, :sampleID, :fileType)');
+        'INSERT INTO metadata (latitude, longitude, title, timestamp, description, sampleID, fileType, reportedAt, reportedBy) ' .
+        'VALUES (:latitude, :longitude, :title, :timestamp, :description, :sampleID, :fileType, :reportedAt, :reportedBy)');
 
       // Bind values to placeholders
       $preparedStatement->bindParam(':latitude', $latitude, PDO::PARAM_STR);
@@ -59,6 +59,12 @@ class Database
       $preparedStatement->bindParam(':description', $description, PDO::PARAM_STR);
       $preparedStatement->bindParam(':sampleID', $sampleID, PDO::PARAM_STR);
       $preparedStatement->bindParam(':fileType', $payloadType, PDO::PARAM_STR);
+
+      // Some logging information
+      $now = date('Y-m-d H:i:s', time());
+      $ip = $_SERVER['REMOTE_ADDR'];
+      $preparedStatement->bindParam(':reportedAt', $now, PDO::PARAM_INT);
+      $preparedStatement->bindParam(':reportedBy', $ip, PDO::PARAM_INT);
 
       // Execute statement
       $success = $preparedStatement->execute();
@@ -88,8 +94,8 @@ class Database
     {
       // Prepare insert statement
       $preparedStatement = $this->db->prepare(
-        'INSERT INTO noiseLevels (latitude, longitude, timestamp, zipCode, noiseLevel) ' .
-        'VALUES (:latitude, :longitude, :timestamp, :zipCode, :noiseLevel)');
+        'INSERT INTO noiseLevels (latitude, longitude, timestamp, zipCode, noiseLevel, reportedAt, reportedBy) ' .
+        'VALUES (:latitude, :longitude, :timestamp, :zipCode, :noiseLevel, :reportedAt, :reportedBy)');
 
       // Bind values to placeholders
       $preparedStatement->bindParam(':latitude', $latitude, PDO::PARAM_STR);
@@ -97,6 +103,12 @@ class Database
       $preparedStatement->bindParam(':timestamp', $timestamp, PDO::PARAM_STR);
       $preparedStatement->bindParam(':zipCode', $zipCode, PDO::PARAM_STR);
       $preparedStatement->bindParam(':noiseLevel', $noiseLevel, PDO::PARAM_INT);
+
+      // Some logging information
+      $now = date('Y-m-d H:i:s', time());
+      $ip = $_SERVER['REMOTE_ADDR'];
+      $preparedStatement->bindParam(':reportedAt', $now, PDO::PARAM_INT);
+      $preparedStatement->bindParam(':reportedBy', $ip, PDO::PARAM_INT);
 
       // Execute statement
       $success = $preparedStatement->execute();
