@@ -44,6 +44,16 @@ class Database
   {
     $success = false;
 
+    // Set title and description to NULL, if string is empty
+    if (empty($title))
+    {
+      $title = null;
+    }
+    if (empty($description))
+    {
+      $description = null;
+    }
+
     try
     {
       // Prepare insert statement
@@ -63,8 +73,8 @@ class Database
       // Some logging information
       $now = date('Y-m-d H:i:s', time());
       $ip = $_SERVER['REMOTE_ADDR'];
-      $preparedStatement->bindParam(':reportedAt', $now, PDO::PARAM_INT);
-      $preparedStatement->bindParam(':reportedBy', $ip, PDO::PARAM_INT);
+      $preparedStatement->bindParam(':reportedAt', $now, PDO::PARAM_STR);
+      $preparedStatement->bindParam(':reportedBy', $ip, PDO::PARAM_STR);
 
       // Execute statement
       $success = $preparedStatement->execute();
@@ -85,7 +95,7 @@ class Database
     $success = false;
 
     // Set zip code to NULL, if string is empty
-    if ($zipCode == '')
+    if (empty($zipCode))
     {
       $zipCode = null;
     }
@@ -107,8 +117,8 @@ class Database
       // Some logging information
       $now = date('Y-m-d H:i:s', time());
       $ip = $_SERVER['REMOTE_ADDR'];
-      $preparedStatement->bindParam(':reportedAt', $now, PDO::PARAM_INT);
-      $preparedStatement->bindParam(':reportedBy', $ip, PDO::PARAM_INT);
+      $preparedStatement->bindParam(':reportedAt', $now, PDO::PARAM_STR);
+      $preparedStatement->bindParam(':reportedBy', $ip, PDO::PARAM_STR);
 
       // Execute statement
       $success = $preparedStatement->execute();

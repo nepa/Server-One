@@ -36,7 +36,7 @@ class DownloadManager
     else
     {
       // Build file name
-      if (isset($resultSet[0]['fileType']))
+      if (!empty($resultSet[0]['fileType']))
       {
         $fileType = $resultSet[0]['fileType'];
       }
@@ -92,7 +92,7 @@ class DownloadManager
 
 // Get sample ID from HTTP GET
 $sampleID = '';
-if (isset($_GET['sid']))
+if (!empty($_GET['sid']))
 {
   $sampleID = $_GET['sid'];
 }

@@ -31,6 +31,10 @@ Server One is based on a SOAP webservice written for PHP 5.x. It includes the fo
 
   * Database.php: Used to access database backend via PHP's PDO extension.
 
+  * Logger.php: Advanced logging facility.
+
+  * logfile.txt: Default file for log output.
+
   * download.php: Download manager for client-side sample fetching.
 
   * c1.php: Webservice test client.
@@ -47,9 +51,9 @@ Currently the MediaService provides the following webservice interface:
       * Arguments:
         - Latitude: xsd:decimal, range +/- 90.0°
         - Longitude: xsd:decimal, range +/- 180.0°
-        - Title: xsd:string, max. 255 characters
+        - Title: xsd:string, optional, max. 255 characters
         - Timestamp: xsd:string, max. 80 characters
-        - Description: xsd:string
+        - Description: xsd:string, optional
         - PayloadType: xsd:string, either one of "mp3", "m4a" or "ogg"
         - Payload: xsd:string, base64 encoded binary file (sound sample)
 

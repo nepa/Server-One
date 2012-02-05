@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.2.0.1
+-- version 2.11.8.1deb5+lenny9
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 21. Januar 2012 um 18:01
--- Server Version: 5.1.37
--- PHP-Version: 5.3.0
+-- Erstellungszeit: 05. Februar 2012 um 19:53
+-- Server Version: 5.0.51
+-- PHP-Version: 5.2.6-1+lenny13
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -16,7 +16,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Datenbank: `s1`
+-- Datenbank: `netpan_s1`
 --
 
 -- --------------------------------------------------------
@@ -26,15 +26,17 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 
 CREATE TABLE IF NOT EXISTS `metadata` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `latitude` decimal(8,5) NOT NULL,
   `longitude` decimal(7,5) NOT NULL,
-  `title` varchar(255) NOT NULL,
+  `title` varchar(255) default NULL,
   `timestamp` varchar(80) NOT NULL,
-  `description` text NOT NULL,
+  `description` text,
   `sampleID` varchar(80) NOT NULL,
   `fileType` varchar(5) NOT NULL,
-  PRIMARY KEY (`id`)
+  `reportedAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  `reportedBy` char(15) NOT NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -44,12 +46,14 @@ CREATE TABLE IF NOT EXISTS `metadata` (
 --
 
 CREATE TABLE IF NOT EXISTS `noiseLevels` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `longitude` decimal(8,5) NOT NULL,
   `latitude` decimal(7,5) NOT NULL,
   `timestamp` varchar(80) NOT NULL,
-  `zipCode` varchar(10) DEFAULT NULL,
+  `zipCode` varchar(10) default NULL,
   `noiseLevel` int(3) NOT NULL,
-  PRIMARY KEY (`id`),
+  `reportedAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  `reportedBy` char(15) NOT NULL,
+  PRIMARY KEY  (`id`),
   KEY `zipCode` (`zipCode`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;

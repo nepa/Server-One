@@ -2,6 +2,7 @@
 
 require_once('./config.php');
 require_once('./Database.php');
+require_once('./Logger.php');
 
 /**
  * Backend media server for meta data and payload handling.
@@ -39,8 +40,12 @@ class MediaServer
     $database = new Database();
     if (!$database->saveMetadata($latitude, $longitude, $title, $timestamp, $description, $sampleID, $payloadType))
     {
+      MediaServer::deleteFile($sampleID); // Remove payload from disk
       return array('Error', 'Could not write meta data to database.');
     }
+
+    // Log file upload
+    Logger::log('File uploaded. (Title: \'' . $title . '\', Sample ID: \'' . $sampleID . '\').', Logger::SAMPLE_UPLOAD);
 
     // Send response
     return array('OK', 'Media file uploaded successfully.', $sampleID);
@@ -71,6 +76,9 @@ class MediaServer
       return array('Error', 'Could not write noise level to database.');
     }
 
+    // Log noise level reporting
+    Logger::log('Noise level \'' . $noiseLevel . '\' reported for zip code area \'' . $zipCode . '\'.', Logger::NOISE_REPORT);
+
     // Send response
     return array('OK', 'Noise level reported successfully.');
   }
@@ -95,6 +103,9 @@ class MediaServer
       return array('Info', 'No nearby sound samples found.');
     }
 
+    // Log samples request
+    Logger::log('Samples requested.', Logger::SAMPLES_REQUEST);
+
     // Send response
     return array('OK', 'Sound samples queried successfully.', $sampleData, count($sampleData));
   }
@@ -118,6 +129,9 @@ class MediaServer
     {
       return array('Info', 'No nearby sound levels found.');
     }
+
+    // Log noise levels request
+    Logger::log('Noise levels requested.', Logger::NOISE_REQUEST);
 
     // Send response
     return array('OK', 'Sound levels queried successfully.', $noiseLevels, count($noiseLevels));
@@ -152,6 +166,9 @@ class MediaServer
     }
     $averageNoiseLevel = intval($sum / count($resultSet));
 
+    // Log average noise levels request
+    Logger::log('Average noise levels requested by range.', Logger::NOISE_AVG_REQUEST);
+
     // Send response
     return array('OK', 'Average sound level queried successfully.', $averageNoiseLevel);
   }
@@ -179,6 +196,9 @@ class MediaServer
     {
       return array('Info', 'No sound levels found in postcode area.');
     }
+
+    // Log average noise levels request
+    Logger::log('Average noise levels requested for zip code area \'' . $zipCode . '\'.', Logger::NOISE_AVG_BY_ZIP_REQUEST);
 
     // Send response
     return array('OK', 'Average sound level successfully queried by zip code.', $averageNoiseLevel);
@@ -250,7 +270,33 @@ class MediaServer
 
     $fileName = $config['upload_dir'] . $sampleID . $config['security_file_extension'];
 
-    return file_put_contents($fileName, base64_decode($payload));
+    // If flag Base64.URL_SAFE was set in Android, we have to revert
+    // URL-safe characters here, otherwise we cannot restore file
+    $payload = strtr($payload, '-_', '+/');
+
+    // Decode payload in chunks (better for big amounts of data)
+    $success = file_put_contents($fileName, base64_decode(chunk_split($payload)));
+
+    // If decoding fails (no data), delete empty file
+    if (!$success)
+    {
+      unlink($fileName);
+    }
+
+    return $success;
+  }
+
+  /**
+   * Remove file from disk, especially when meta data could
+   * not be written to database.
+   */
+  public static function deleteFile($sampleID)
+  {
+    global $config;
+
+    $fileName = $config['upload_dir'] . $sampleID . $config['security_file_extension'];
+
+    return unlink($fileName);
   }
 }
 
