@@ -45,7 +45,8 @@ class MediaServer
     }
 
     // Log file upload
-    Logger::log('File uploaded. (Title: \'' . $title . '\', Sample ID: \'' . $sampleID . '\').', Logger::SAMPLE_UPLOAD);
+    Logger::log('File uploaded (Title: \'' . $title . '\', Sample ID: \'' . $sampleID . '\'): ' .
+                'http://maps.google.com/maps?q=' . $latitude . '+' . $longitude, Logger::SAMPLE_UPLOAD);
 
     // Send response
     return array('OK', 'Media file uploaded successfully.', $sampleID);
@@ -77,7 +78,8 @@ class MediaServer
     }
 
     // Log noise level reporting
-    Logger::log('Noise level \'' . $noiseLevel . '\' reported for zip code area \'' . $zipCode . '\'.', Logger::NOISE_REPORT);
+    Logger::log('Noise level \'' . $noiseLevel . '\' reported for zip code area \'' . $zipCode . '\': ' .
+                'http://maps.google.com/maps?q=' . $latitude . '+' . $longitude, Logger::NOISE_REPORT);
 
     // Send response
     return array('OK', 'Noise level reported successfully.');
