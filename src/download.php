@@ -1,7 +1,7 @@
 <?php
 
-require_once('./config.php');
-require_once('./Database.php');
+require_once(dirname(__FILE__) . '/config.php');
+require_once(dirname(__FILE__) . '/Database.php');
 
 /**
  * Download manager for client-side sample fetching.

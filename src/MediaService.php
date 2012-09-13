@@ -1,6 +1,6 @@
 <?php
 
-require_once('./MediaServer.php');
+require_once(dirname(__FILE__) . '/MediaServer.php');
 
 ini_set('soap.wsdl_cache_enabled', '0');
 

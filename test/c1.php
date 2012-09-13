@@ -6,7 +6,7 @@
 
 try
 {
-  $file = file_get_contents('./test.mp3');
+  $file = file_get_contents(dirname(__FILE__) . '/test.mp3');
 
   $client = new SoapClient('http://localhost/s1/s1.php?wsdl');
   $response = $client->uploadSample('51.586923', '7.656859', 'Some title', time(), 'Some recorded audio.', 'mp3', base64_encode($file));

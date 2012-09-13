@@ -6,11 +6,11 @@
 
 error_reporting(0); // No error reporting in live environment
 
-require_once('./MediaService.php');
+require_once(dirname(__FILE__) . '/MediaService.php');
 
 try
 {
-  $server = new SoapServer('./s1.wsdl', array('encoding' => 'ISO-8859-1'));
+  $server = new SoapServer(dirname(__FILE__) . '/s1.wsdl', array('encoding' => 'ISO-8859-1'));
   $server->setClass('MediaService');
   $server->handle();
 }
