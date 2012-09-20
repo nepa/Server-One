@@ -18,13 +18,17 @@ class MediaServer
     // Validate geo coordinates
     if (!MediaServer::validGeoCoordinates($latitude, $longitude))
     {
-      return array('Error', 'Invalid or no geo coordinates provided.');
+      return array(
+        'Statuscode' => 'Error',
+        'Message' => 'Invalid or no geo coordinates provided.');
     }
 
     // Validate payload type
     if (!MediaServer::validatePayloadType($payloadType))
     {
-      return array('Error', 'Invalid or no payload type provided.');
+      return array(
+        'Statuscode' => 'Error',
+        'Message' => 'Invalid or no payload type provided.');
     }
 
     // Generate random file name
@@ -33,7 +37,9 @@ class MediaServer
     // Write file to disk
     if (!MediaServer::storePayload($sampleID, $payload))
     {
-      return array('Error', 'Could not store payload on disk.');
+      return array(
+        'Statuscode' => 'Error',
+        'Message' => 'Could not store payload on disk.');
     }
 
     // Save meta data in database
@@ -41,7 +47,9 @@ class MediaServer
     if (!$database->saveMetadata($latitude, $longitude, $title, $timestamp, $description, $sampleID, $payloadType))
     {
       MediaServer::deleteFile($sampleID); // Remove payload from disk
-      return array('Error', 'Could not write meta data to database.');
+      return array(
+        'Statuscode' => 'Error',
+        'Message' => 'Could not write meta data to database.');
     }
 
     // Log file upload
@@ -49,7 +57,10 @@ class MediaServer
                 'http://maps.google.com/maps?q=' . $latitude . '+' . $longitude, Logger::SAMPLE_UPLOAD);
 
     // Send response
-    return array('OK', 'Media file uploaded successfully.', $sampleID);
+    return array(
+      'Statuscode' => 'OK',
+      'Message' => 'Media file uploaded successfully.',
+      'SampleID' => $sampleID);
   }
 
   /**
@@ -61,20 +72,26 @@ class MediaServer
     // Validate geo coordinates
     if (!MediaServer::validGeoCoordinates($latitude, $longitude))
     {
-      return array('Error', 'Invalid or no geo coordinates provided.');
+      return array(
+        'Statuscode' => 'Error',
+        'Message' => 'Invalid or no geo coordinates provided.');
     }
 
     // Validate zip code
     if (!MediaServer::validZipCode($zipCode, true))
     {
-      return array('Error', 'Invalid zip code provided. It must not exceed ten characters.');
+      return array(
+        'Statuscode' => 'Error',
+        'Message' => 'Invalid zip code provided. It must not exceed ten characters.');
     }
 
     // Store noise level in database
     $database = new Database();
     if (!$database->saveNoiseLevel($latitude, $longitude, $timestamp, $zipCode, $noiseLevel))
     {
-      return array('Error', 'Could not write noise level to database.');
+      return array(
+        'Statuscode' => 'Error',
+        'Message' => 'Could not write noise level to database.');
     }
 
     // Log noise level reporting
@@ -82,7 +99,9 @@ class MediaServer
                 'http://maps.google.com/maps?q=' . $latitude . '+' . $longitude, Logger::NOISE_REPORT);
 
     // Send response
-    return array('OK', 'Noise level reported successfully.');
+    return array(
+      'Statuscode' => 'OK',
+      'Message' => 'Noise level reported successfully.');
   }
 
   /**
@@ -94,7 +113,9 @@ class MediaServer
     // Validate geo coordinates
     if (!MediaServer::validGeoCoordinates($latitude, $longitude))
     {
-      return array('Error', 'Invalid or no geo coordinates provided.');
+      return array(
+        'Statuscode' => 'Error',
+        'Message' => 'Invalid or no geo coordinates provided.');
     }
 
     // Return data of sound samples in neighbourhood
@@ -102,14 +123,20 @@ class MediaServer
     $sampleData = $database->getSamples($latitude, $longitude, $range);
     if (count($sampleData) <= 0)
     {
-      return array('Info', 'No nearby sound samples found.');
+      return array(
+        'Statuscode' => 'Info',
+        'Message' => 'No nearby sound samples found.');
     }
 
     // Log samples request
     Logger::log('Samples requested.', Logger::SAMPLES_REQUEST);
 
     // Send response
-    return array('OK', 'Sound samples queried successfully.', $sampleData, count($sampleData));
+    return array(
+      'Statuscode' => 'OK',
+      'Message' => 'Sound samples queried successfully.',
+      'SampleData' => $sampleData,
+      'ResultCount' => count($sampleData));
   }
 
   /**
@@ -121,7 +148,9 @@ class MediaServer
     // Validate geo coordinates
     if (!MediaServer::validGeoCoordinates($latitude, $longitude))
     {
-      return array('Error', 'Invalid or no geo coordinates provided.');
+      return array(
+        'Statuscode' => 'Error',
+        'Message' => 'Invalid or no geo coordinates provided.');
     }
 
     // Return noise levels from neighbourhood
@@ -129,14 +158,20 @@ class MediaServer
     $noiseLevels = $database->getNoiseLevels($latitude, $longitude, $range);
     if (count($noiseLevels) <= 0)
     {
-      return array('Info', 'No nearby sound levels found.');
+      return array(
+        'Statuscode' => 'Info',
+        'Message' => 'No nearby sound levels found.');
     }
 
     // Log noise levels request
     Logger::log('Noise levels requested.', Logger::NOISE_REQUEST);
 
     // Send response
-    return array('OK', 'Sound levels queried successfully.', $noiseLevels, count($noiseLevels));
+    return array(
+      'Statuscode' => 'OK',
+      'Message' => 'Sound levels queried successfully.',
+      'NoiseLevels' => $noiseLevels,
+      'ResultCount' => count($noiseLevels));
   }
 
   /**
@@ -149,7 +184,9 @@ class MediaServer
     // Validate geo coordinates
     if (!MediaServer::validGeoCoordinates($latitude, $longitude))
     {
-      return array('Error', 'Invalid or no geo coordinates provided.');
+      return array(
+        'Statuscode' => 'Error',
+        'Message' => 'Invalid or no geo coordinates provided.');
     }
 
     // Return average noise level from neighbourhood
@@ -157,7 +194,9 @@ class MediaServer
     $resultSet = $database->getNoiseLevels($latitude, $longitude, $range);
     if (count($resultSet) <= 0)
     {
-      return array('Info', 'No nearby sound levels found.');
+      return array(
+        'Statuscode' => 'Info',
+        'Message' => 'No nearby sound levels found.');
     }
 
     // Calculate average value and return as integer
@@ -172,7 +211,10 @@ class MediaServer
     Logger::log('Average noise levels requested by range.', Logger::NOISE_AVG_REQUEST);
 
     // Send response
-    return array('OK', 'Average sound level queried successfully.', $averageNoiseLevel);
+    return array(
+      'Statuscode' => 'OK',
+      'Message' => 'Average sound level queried successfully.',
+      'AverageNoiseLevel' => $averageNoiseLevel);
   }
 
   /**
@@ -185,7 +227,9 @@ class MediaServer
     // Validate zip code
     if (!MediaServer::validZipCode($zipCode, false))
     {
-      return array('Error', 'Invalid or no zip code provided.');
+      return array(
+        'Statuscode' => 'Error',
+        'Message' => 'Invalid or no zip code provided.');
     }
 
     // Return average noise level by zip code
@@ -196,14 +240,19 @@ class MediaServer
     $averageNoiseLevel = intval($resultSet[0]['averageNoiseLevel']);
     if ($averageNoiseLevel == '')
     {
-      return array('Info', 'No sound levels found in postcode area.');
+      return array(
+        'Statuscode' => 'Info',
+        'Message' => 'No sound levels found in postcode area.');
     }
 
     // Log average noise levels request
     Logger::log('Average noise levels requested for zip code area \'' . $zipCode . '\'.', Logger::NOISE_AVG_BY_ZIP_REQUEST);
 
     // Send response
-    return array('OK', 'Average sound level successfully queried by zip code.', $averageNoiseLevel);
+    return array(
+      'Statuscode' => 'OK',
+      'Message' => 'Average sound level successfully queried by zip code.',
+      'AverageNoiseLevel' => $averageNoiseLevel);
   }
 
   /**
