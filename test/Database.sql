@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 2.11.8.1deb5+lenny9
+-- version 3.2.0.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 05. Februar 2012 um 19:53
--- Server Version: 5.0.51
--- PHP-Version: 5.2.6-1+lenny13
+-- Erstellungszeit: 27. September 2012 um 02:45
+-- Server Version: 5.1.37
+-- PHP-Version: 5.3.0
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -57,3 +57,15 @@ CREATE TABLE IF NOT EXISTS `noiseLevels` (
   PRIMARY KEY  (`id`),
   KEY `zipCode` (`zipCode`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `apiUsers`
+--
+
+CREATE TABLE IF NOT EXISTS `apiUsers` (
+  `appName` varchar(80) NOT NULL,
+  `apiKey` char(32) NOT NULL,
+  PRIMARY KEY (`appName`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

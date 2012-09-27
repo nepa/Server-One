@@ -304,6 +304,37 @@ class Database
 
     return $result;
   }
+
+  /**
+   * Query database for authentification data.
+   */
+  public function getAuthenticationData($appName, $apiKey)
+  {
+    $result = array();
+
+    try
+    {
+      // Prepare select statement
+      $preparedStatement = $this->db->prepare(
+        'SELECT appName, apiKey FROM apiUsers WHERE appName = :appName AND apiKey = :apiKey');
+
+      // Bind value to placeholder
+      $preparedStatement->bindParam(':appName', $appName, PDO::PARAM_STR);
+      $preparedStatement->bindParam(':apiKey', $apiKey, PDO::PARAM_STR);
+
+      // Execute statement
+      $preparedStatement->execute();
+
+      // Fetch result set and eventually return it
+      $result = $preparedStatement->fetchAll(PDO::FETCH_ASSOC);
+    }
+    catch (PDOException $e)
+    {
+      die($e->getMessage());
+    }
+
+    return $result;
+  }
 }
 
 ?>

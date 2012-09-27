@@ -16,4 +16,6 @@ $config['logfile'] = dirname(__FILE__) . '/logfile.txt';
 $config['from_email'] = '';
 $config['to_email'] = '';
 
+$config['auth_salt'] = 'Some random phrase.';
+
 ?>
