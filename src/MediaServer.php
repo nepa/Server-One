@@ -32,7 +32,7 @@ class MediaServer
     }
 
     // Generate random file name
-    $sampleID = MediaServer::generateSampleID($latitude, $longitude, $description);
+    $sampleID = MediaServer::generateSampleID($latitude, $longitude, $title, $timestamp, $description);
 
     // Write file to disk
     if (!MediaServer::storePayload($sampleID, $payload))
